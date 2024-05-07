@@ -104,10 +104,10 @@ public class EmployeeController {
     @return*/
     @ApiOperation("启用禁用员工账号")
     @PostMapping("status/{status}")
-    public Result enable( @PathVariable Integer status,
+    public Result enableOrDisable( @PathVariable Integer status,
                                        Long id){
 
-        employeeService.enable(status,id);
+        employeeService.enableOrDisable(status,id);
         return Result.success();
     }
 
