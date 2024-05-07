@@ -105,6 +105,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return pageResult;
     }
 
+    @Override
+    public void enable(Integer status, Long id) {
+
+        Employee employee= Employee.builder().status(status).id(id).build();
+        employeeMapper.update(employee);
+    }
+
 }
 //        Employee employee = new Employee(null,employeeDTO.getUsername(),employeeDTO.getName(),null,
 //                employeeDTO.getPhone(),employeeDTO.getSex(),employeeDTO.getIdNumber(),null,

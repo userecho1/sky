@@ -5,6 +5,7 @@ import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -24,4 +25,7 @@ public interface EmployeeMapper {
 
 
     List<Employee> list(EmployeePageQueryDTO employeePageQueryDTO);
+
+
+    void update(Employee employee);
 }
