@@ -45,4 +45,12 @@ public class CategoryController {
         categoryService.save(categoryDTO);
         return Result.success();
     }
+
+    @ApiOperation("修改分类")
+    @PutMapping
+    public  Result updateCategory(@RequestBody CategoryDTO categoryDTO) {
+
+        categoryService.updateCategory(categoryDTO);
+        return Result.success();
+    }
 }
