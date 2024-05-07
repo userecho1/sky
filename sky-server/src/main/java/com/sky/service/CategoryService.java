@@ -12,4 +12,6 @@ public interface CategoryService {
     void save(CategoryDTO categoryDTO);
 
     void updateCategory(CategoryDTO categoryDTO);
+
+    void deleteCategory(Long id);
 }
