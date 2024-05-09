@@ -29,4 +29,7 @@ public interface CategoryMapper {
 
     @Select("select  name  from  category where id=#{categoryId}")
     String getCategoryNameByCategoryid(Long categoryId);
+
+    @Select("select * from category where type=#{type} and status='1' ")
+    List<Category> listAndStatus(Category query);
 }
