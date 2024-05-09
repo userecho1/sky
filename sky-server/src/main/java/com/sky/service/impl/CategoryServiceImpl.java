@@ -98,9 +98,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> qurryByType(Integer id) {
+    public List<Category> qurryByType(Integer type) {
         CategoryPageQueryDTO queryDTO=new CategoryPageQueryDTO();
-        queryDTO.setType(id);
+        queryDTO.setType(type);
         List<Category> categoryList=categoryMapper.list(queryDTO);
         return categoryList;
     }

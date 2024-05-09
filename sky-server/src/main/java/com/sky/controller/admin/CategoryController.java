@@ -63,9 +63,9 @@ public class CategoryController {
     return Result.success();
     }
     @ApiOperation("根据类型查询分类")
-    @DeleteMapping("/list")
-    public Result<List<Category>> deleteCategory(Integer id) {
-        List<Category> categoryList=categoryService.qurryByType(id);
+    @GetMapping ("/list")
+    public Result<List<Category>> qurryByType(Integer type) {
+        List<Category> categoryList=categoryService.qurryByType(type);
         return Result.success(categoryList);
     }
 }
