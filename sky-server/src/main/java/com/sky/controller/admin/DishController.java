@@ -26,13 +26,20 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
-//    @ApiOperation("根据id查询菜品")
-//    @GetMapping("/{id}")
-//    public Result<Dish> getById(@PathVariable int id) {
-//        Dish dish=dishService.getById();
-//
-//        return Result.success(dish);
-//    }
+    @ApiOperation("根据id查询菜品")
+    @GetMapping("/{id}")
+    public Result<Dish> getById(@PathVariable int id) {
+        Dish dish=dishService.getById(id);
+
+        return Result.success(dish);
+    }
+    @ApiOperation("根据分类查询菜品")
+    @GetMapping("/list")
+    public Result<List<Dish>> getListByCategoryId(Integer categoryId) {
+        List<Dish> dishList=dishService.getListByCategoryId(categoryId);
+
+        return Result.success(dishList);
+    }
 
     @ApiOperation("分页查询菜品")
     @GetMapping("/page")
