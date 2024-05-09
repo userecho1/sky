@@ -80,15 +80,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         //md5加密123456
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
 
         //
 //        String username = (String) request.getSession().getAttribute("username");
 
 
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.insert(employee);
 
     }
@@ -108,7 +108,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void enableOrDisable(Integer status, Long id) {
 
         Employee employee= Employee.builder().status(status).id(id)
-                .updateTime(LocalDateTime.now()).updateUser(BaseContext.getCurrentId()).build();
+//                .updateTime(LocalDateTime.now())
+//                .updateUser(BaseContext.getCurrentId())
+                .build();
         employeeMapper.update(employee);
     }
 
@@ -125,8 +127,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         BeanUtils.copyProperties(employeeDTO,employee);
         Long id=BaseContext.getCurrentId();
 
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(id);
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(id);
         employeeMapper.update(employee);
     }
 
