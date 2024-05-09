@@ -7,6 +7,7 @@ import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,17 +29,17 @@ public class DishController {
 
     @ApiOperation("根据id查询菜品")
     @GetMapping("/{id}")
-    public Result<Dish> getById(@PathVariable int id) {
-        Dish dish=dishService.getById(id);
+    public Result<DishVO> getById(@PathVariable Long id) {
+        DishVO dishVO=dishService.getById(id);
 
-        return Result.success(dish);
+        return Result.success(dishVO);
     }
     @ApiOperation("根据分类查询菜品")
     @GetMapping("/list")
-    public Result<List<Dish>> getListByCategoryId(Integer categoryId) {
-        List<Dish> dishList=dishService.getListByCategoryId(categoryId);
+    public Result<List<DishVO>> getListByCategoryId(Long categoryId) {
+        List<DishVO> dishListVOs=dishService.getListByCategoryId(categoryId);
 
-        return Result.success(dishList);
+        return Result.success(dishListVOs);
     }
 
     @ApiOperation("分页查询菜品")

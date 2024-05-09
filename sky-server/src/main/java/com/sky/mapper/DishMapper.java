@@ -17,8 +17,8 @@ public interface DishMapper {
     List<Dish> list(DishPageQueryDTO dishPageQueryDTO);
 
     @Select("select * from dish where category_id=#{categoryId}")
-    List<Dish> getByCategoryId(Integer categoryId);
+    List<Dish> getByCategoryId(Long categoryId);
 
     @Select("select *from dish where id=#{id}")
-    Dish getById(int id);
+    Dish getById(Long id);
 }
