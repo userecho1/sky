@@ -15,4 +15,6 @@ public interface DishService {
 
 
     DishVO getById(Long id);
+
+    void enableOrDisable(Integer status, Long id);
 }

@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 
+import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,4 +22,6 @@ public interface DishMapper {
 
     @Select("select *from dish where id=#{id}")
     Dish getById(Long id);
+
+    void update(Dish dish);
 }

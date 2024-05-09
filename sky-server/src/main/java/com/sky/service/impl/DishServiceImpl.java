@@ -3,11 +3,13 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.annotation.AutoFill;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.enumeration.OperationType;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
@@ -90,6 +92,15 @@ public class DishServiceImpl implements DishService {
         dishVO.setFlavors(flavors);
 
         return dishVO;
+    }
+
+    @AutoFill(OperationType.UPDATE)
+    @Override
+    public void enableOrDisable(Integer status, Long id) {
+        Dish dish=new Dish();
+        dish.setStatus(status);
+        dish.setId(id);
+        dishMapper.update(dish);
     }
 
 

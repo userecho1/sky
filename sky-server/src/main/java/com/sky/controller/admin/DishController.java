@@ -12,10 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,5 +45,12 @@ public class DishController {
         PageResult p=dishService.Page(dishPageQueryDTO);
 
         return Result.success(p);
+    }
+
+    @ApiOperation("菜品起售停售")
+    @PostMapping("status/{status}")
+    public Result enableOrDisable(@PathVariable Integer status, Long id) {
+        dishService.enableOrDisable(status,id);
+        return Result.success();
     }
 }
