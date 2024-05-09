@@ -8,6 +8,7 @@ import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.dto.DishDTO;
 import com.sky.entity.Category;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
@@ -94,6 +95,14 @@ public class CategoryServiceImpl implements CategoryService {
         if(count2!=0){
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);}
         categoryMapper.delete(id);
+    }
+
+    @Override
+    public List<Category> qurryByType(Integer id) {
+        CategoryPageQueryDTO queryDTO=new CategoryPageQueryDTO();
+        queryDTO.setType(id);
+        List<Category> categoryList=categoryMapper.list(queryDTO);
+        return categoryList;
     }
 
 }
