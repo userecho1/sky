@@ -19,4 +19,6 @@ public interface DishService {
     void enableOrDisable(Integer status, Long id);
 
     void save(DishDTO dishDTO);
+
+    void modify(DishDTO dishDTO);
 }

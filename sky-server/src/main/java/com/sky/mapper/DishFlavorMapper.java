@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface DishFlavorMapper {
@@ -14,4 +15,9 @@ public interface DishFlavorMapper {
 
 
     void insert(DishFlavor flavor);
+
+    @Select("select * from  dish_flavor where dish_id=#{dishId} and name=#{name}")
+   DishFlavor getFlavorByDishidandFlavorName(DishFlavor flavor);
+
+    void update(DishFlavor dishFlavor);
 }

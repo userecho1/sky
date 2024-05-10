@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -124,6 +125,32 @@ public class DishServiceImpl implements DishService {
         }
 
 
+    }
+
+    @Override
+    @Transactional
+    public void modify(DishDTO dishDTO) {
+
+        Dish dish=new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        //更新菜品
+        dishMapper.update(dish);
+
+        Long dishId=dish.getId();
+        //风味循环插入菜品id，并插入dishFlavor表
+        List<DishFlavor> flavors=dishDTO.getFlavors();
+        for (DishFlavor dishFlavor : flavors) {
+            dishFlavor.setDishId(dishId);
+          DishFlavor existingFlavor = dishFlavorMapper.getFlavorByDishidandFlavorName(dishFlavor);
+
+
+            if(existingFlavor==null) {
+                dishFlavorMapper.insert(dishFlavor);
+            }
+            else {
+                dishFlavorMapper.update(dishFlavor);
+            }
+        }
     }
 
 

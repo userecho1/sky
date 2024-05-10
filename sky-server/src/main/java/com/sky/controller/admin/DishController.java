@@ -60,4 +60,11 @@ public class DishController {
         dishService.save(dishDTO);
         return  Result.success();
     }
+
+    @ApiOperation("修改菜品")
+    @PutMapping
+    public Result  modify(@RequestBody DishDTO dishDTO) {
+        dishService.modify(dishDTO);
+        return  Result.success();
+    }
 }

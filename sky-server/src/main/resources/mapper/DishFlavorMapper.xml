@@ -18,4 +18,17 @@
             <if test="value != null">#{value},</if>
         </trim>
     </insert>
+    <update id="update" parameterType="com.sky.entity.DishFlavor">
+        UPDATE dish_flavor
+        <set>
+            <if test="value != null">value = #{value},</if>
+        </set>
+        <where>
+            <if test="dishId != null">dish_id = #{dishId}</if>
+            <if test="name != null">and name = #{name}</if>
+        </where>
+    </update>
+
+
+
 </mapper>
