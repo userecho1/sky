@@ -17,22 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "店铺相关接口")
 public class ShopController {
 
-    @Autowired
-    private ShopService shopService;
-
-    @ApiOperation("获取营业状态")
-    @GetMapping("/status")
-    public Result<Integer> getStatus(){
-
-        Integer a= shopService.getStatus();
-        return  Result.success(a);
-    }
-
-    @ApiOperation("设置营业状态")
-    @GetMapping("/{status}")
-    public Result<Integer> getStatus(Integer status){
-
-         shopService.setStatus(status);
-        return  Result.success();
-    }
+//    @Autowired
+//    private ShopService shopService;
+//
+//    @ApiOperation("获取营业状态")
+//    @GetMapping("/status")
+//    public Result<Integer> getStatus(){
+//
+//        Integer a= shopService.getStatus();
+//        return  Result.success(a);
+//    }
+//
+//    @ApiOperation("设置营业状态")
+//    @GetMapping("/{status}")
+//    public Result<Integer> getStatus(Integer status){
+//
+//         shopService.setStatus(status);
+//        return  Result.success();
+//    }
 }
