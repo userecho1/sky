@@ -4,6 +4,7 @@ package com.sky.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.annotation.AutoFill;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Category;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +103,27 @@ public class DishServiceImpl implements DishService {
         dish.setStatus(status);
         dish.setId(id);
         dishMapper.update(dish);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void save(DishDTO dishDTO) {
+        //默认不起售
+        dishDTO.setStatus(StatusConstant.DISABLE);
+        Dish dish=new Dish();
+        BeanUtils.copyProperties(dishDTO,dish);
+        //插入新增菜品并获得菜品id
+        dishMapper.insert(dish);
+        Dish dish1=dishMapper.getByDishName(dish.getName());
+
+        //风味循环插入菜品id，并插入dishFlavor表
+        List<DishFlavor> flavors=dishDTO.getFlavors();
+        for (DishFlavor dishFlavor : flavors) {
+            dishFlavor.setDishId(dish1.getId());
+            dishFlavorMapper.insert(dishFlavor);
+        }
+
+
     }
 
 

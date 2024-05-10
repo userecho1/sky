@@ -53,4 +53,11 @@ public class DishController {
         dishService.enableOrDisable(status,id);
         return Result.success();
     }
+
+    @ApiOperation("新增菜品")
+    @PostMapping
+    public Result save(@RequestBody DishDTO dishDTO) {
+        dishService.save(dishDTO);
+        return  Result.success();
+    }
 }
