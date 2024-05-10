@@ -144,19 +144,15 @@ public class DishServiceImpl implements DishService {
         dishMapper.update(dish);
 
         Long dishId=dish.getId();
+        dishFlavorMapper.delete(dishId);
         //风味循环插入菜品id，并插入dishFlavor表
         List<DishFlavor> flavors=dishDTO.getFlavors();
+
         for (DishFlavor dishFlavor : flavors) {
             dishFlavor.setDishId(dishId);
-          DishFlavor existingFlavor = dishFlavorMapper.getFlavorByDishidandFlavorName(dishFlavor);
 
-
-            if(existingFlavor==null) {
                 dishFlavorMapper.insert(dishFlavor);
-            }
-            else {
-                dishFlavorMapper.update(dishFlavor);
-            }
+
         }
     }
 
