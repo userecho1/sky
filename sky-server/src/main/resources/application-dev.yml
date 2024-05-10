@@ -6,3 +6,6 @@ sky:
     database: sky_take_out
     username: need
     password: 123456
+  alioss:
+    bucket-name: sky-java-spring
+    endpoint: oss-cn-hangzhou.aliyuncs.com

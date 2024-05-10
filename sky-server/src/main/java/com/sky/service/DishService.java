@@ -21,4 +21,6 @@ public interface DishService {
     void save(DishDTO dishDTO);
 
     void modify(DishDTO dishDTO);
+
+    void deletes(List<Long> ids);
 }

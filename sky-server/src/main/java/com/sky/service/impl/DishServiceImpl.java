@@ -4,6 +4,7 @@ package com.sky.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.annotation.AutoFill;
+import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
@@ -11,9 +12,11 @@ import com.sky.entity.Category;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
 import com.sky.enumeration.OperationType;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -36,6 +39,8 @@ public class DishServiceImpl implements DishService {
     private CategoryMapper categoryMapper;
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
+    @Autowired
+    private SetmealDishMapper setmealDishMapper;
 
     @Override
     public PageResult Page(DishPageQueryDTO dishPageQueryDTO) {
@@ -119,9 +124,11 @@ public class DishServiceImpl implements DishService {
 
         //风味循环插入菜品id，并插入dishFlavor表
         List<DishFlavor> flavors=dishDTO.getFlavors();
-        for (DishFlavor dishFlavor : flavors) {
-            dishFlavor.setDishId(dish1.getId());
-            dishFlavorMapper.insert(dishFlavor);
+        if(flavors!=null&&flavors.size()>0) {
+            for (DishFlavor dishFlavor : flavors) {
+                dishFlavor.setDishId(dish1.getId());
+                dishFlavorMapper.insert(dishFlavor);
+            }
         }
 
 
@@ -149,6 +156,21 @@ public class DishServiceImpl implements DishService {
             }
             else {
                 dishFlavorMapper.update(dishFlavor);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deletes(List<Long> ids) {
+        for (Long id : ids) {
+            if(dishMapper.getById(id).getStatus()==StatusConstant.ENABLE) {
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+            }else if(setmealDishMapper.getSetmealIdsByDishId(id)!=null) {
+                    throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+            }else {
+                dishMapper.delete(id);
+                dishFlavorMapper.delete(id);
             }
         }
     }

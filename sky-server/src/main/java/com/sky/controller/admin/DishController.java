@@ -67,4 +67,10 @@ public class DishController {
         dishService.modify(dishDTO);
         return  Result.success();
     }
+    @ApiOperation("批量删除菜品")
+    @DeleteMapping
+    public Result  deletes(@RequestParam List<Long> ids) {
+        dishService.deletes(ids);
+        return  Result.success();
+    }
 }

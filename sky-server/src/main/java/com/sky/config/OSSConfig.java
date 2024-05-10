@@ -3,6 +3,7 @@ package com.sky.config;
 
 import com.sky.properties.AliOssProperties;
 import com.sky.utils.AliOssUtil;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class OSSConfig {
 
     @Bean
+    @ConditionalOnMissingBean
     public AliOssUtil aliOssUtil(AliOssProperties aliOssProperties){
 
         AliOssUtil aliOssUtil=new AliOssUtil(aliOssProperties.getEndpoint(), aliOssProperties.getBucketName());
