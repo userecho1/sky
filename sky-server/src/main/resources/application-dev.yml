@@ -9,3 +9,8 @@ sky:
   alioss:
     bucket-name: sky-java-spring
     endpoint: oss-cn-hangzhou.aliyuncs.com
+  redis:
+    password: 123456
+    host: localhost
+    port: 6379
+    database: 10
