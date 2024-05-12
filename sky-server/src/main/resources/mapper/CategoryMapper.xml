@@ -48,6 +48,16 @@
             <if test="type!=null">and type=#{type}</if>
         </where>
         order by sort
+    </select>
+
+    <select id="listAndStatus" resultType="com.sky.entity.Category">
+        select * from category
+        <where>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            and status='1'
+        </where>
 
     </select>
 </mapper>
