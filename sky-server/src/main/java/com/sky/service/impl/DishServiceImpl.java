@@ -102,7 +102,6 @@ public class DishServiceImpl implements DishService {
         return dishVO;
     }
 
-    @AutoFill(OperationType.UPDATE)
     @Override
     public void enableOrDisable(Integer status, Long id) {
         Dish dish=new Dish();
