@@ -70,17 +70,17 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public List<DishVO> getListByCategoryId(Long categoryId) {
-       List<Dish> dishList= dishMapper.getByCategoryId(categoryId);
+    public List<DishVO> getListByCategoryId(Dish dish) {
+       List<Dish> dishList= dishMapper.getList(dish);
         List<DishVO> dishVOList=new ArrayList<>();
-        for (Dish dish : dishList) {
+        for (Dish dish1 : dishList) {
             DishVO dishVO=new DishVO();
-            BeanUtils.copyProperties(dish,dishVO);
+            BeanUtils.copyProperties(dish1,dishVO);
 
-            String categoryname= categoryMapper.getCategoryNameByCategoryid(dish.getCategoryId());
+            String categoryname= categoryMapper.getCategoryNameByCategoryid(dish1.getCategoryId());
             dishVO.setCategoryName(categoryname);
 
-            List<DishFlavor> flavors=dishFlavorMapper.getFlavorsByDishid(dish.getId());
+            List<DishFlavor> flavors=dishFlavorMapper.getFlavorsByDishid(dish1.getId());
             dishVO.setFlavors(flavors);
             dishVOList.add(dishVO);
         }
@@ -88,12 +88,13 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public DishVO getById(Long id) {
-        Dish dish=dishMapper.getById(id);
+    public DishVO getById(Dish dish) {
+        Dish dish1=dishMapper.getOne(dish);
+        Long id=dish1.getId();
         DishVO dishVO=new DishVO();
-        BeanUtils.copyProperties(dish,dishVO);
+        BeanUtils.copyProperties(dish1,dishVO);
 
-        String categoryname= categoryMapper.getCategoryNameByCategoryid(dish.getCategoryId());
+        String categoryname= categoryMapper.getCategoryNameByCategoryid(dish1.getCategoryId());
         dishVO.setCategoryName(categoryname);
 
         List<DishFlavor> flavors=dishFlavorMapper.getFlavorsByDishid(id);
@@ -119,7 +120,7 @@ public class DishServiceImpl implements DishService {
         BeanUtils.copyProperties(dishDTO,dish);
         //插入新增菜品并获得菜品id
         dishMapper.insert(dish);
-        Dish dish1=dishMapper.getByDishName(dish.getName());
+        Dish dish1=dishMapper.getOne(dish);
 
         //风味循环插入菜品id，并插入dishFlavor表
         List<DishFlavor> flavors=dishDTO.getFlavors();
@@ -159,7 +160,9 @@ public class DishServiceImpl implements DishService {
     @Transactional
     public void deletes(List<Long> ids) {
         for (Long id : ids) {
-            if(dishMapper.getById(id).getStatus()==StatusConstant.ENABLE) {
+            Dish dish=new Dish();
+            dish.setId(id);
+            if(dishMapper.getOne(dish).getStatus()==StatusConstant.ENABLE) {
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             }else if(setmealDishMapper.getSetmealIdsByDishId(id)!=null) {
                     throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);

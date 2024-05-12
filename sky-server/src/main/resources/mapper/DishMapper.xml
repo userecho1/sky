@@ -54,4 +54,77 @@
     </where>
     order by  id desc
 </select>
+    <select id="getOne" resultType="com.sky.entity.Dish">
+        SELECT * FROM dish
+        <where>
+            <if test="name != null and name != ''">
+                AND name = #{name}
+            </if>
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="price != null">
+                AND price = #{price}
+            </if>
+            <if test="image != null and image != ''">
+                AND image = #{image}
+            </if>
+            <if test="description != null and description != ''">
+                AND description = #{description}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime}
+            </if>
+            <if test="createUser != null">
+                AND create_user = #{createUser}
+            </if>
+            <if test="updateUser != null">
+                AND update_user = #{updateUser}
+            </if>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+        </where>
+    </select>
+    <select id="getList" resultType="com.sky.entity.Dish">
+        SELECT * FROM dish
+        <where>
+            <if test="name != null and name != ''">
+                AND name = #{name}
+            </if>
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="price != null">
+                AND price = #{price}
+            </if>
+            <if test="image != null and image != ''">
+                AND image = #{image}
+            </if>
+            <if test="description != null and description != ''">
+                AND description = #{description}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                AND update_time = #{updateTime}
+            </if>
+            <if test="createUser != null">
+                AND create_user = #{createUser}
+            </if>
+            <if test="updateUser != null">
+                AND update_user = #{updateUser}
+            </if>
+        </where>
+    </select>
 </mapper>

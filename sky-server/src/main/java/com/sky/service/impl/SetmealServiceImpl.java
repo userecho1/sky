@@ -6,6 +6,7 @@ import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
@@ -16,6 +17,7 @@ import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetmealService;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
 import org.apache.poi.hssf.record.DVALRecord;
 import org.springframework.beans.BeanUtils;
@@ -71,7 +73,9 @@ public class SetmealServiceImpl implements SetmealService {
         setmeal.setStatus(status);
         List<SetmealDish> setmealDishList=setmealDishMapper.getBySetmealId(id);
         for (SetmealDish setmealDish : setmealDishList) {
-            if(dishMapper.getById(setmealDish.getDishId()).getStatus()==StatusConstant.DISABLE){
+            Dish dish = new Dish();
+            dish.setId(setmealDish.getDishId());
+            if(dishMapper.getOne(dish).getStatus()==StatusConstant.DISABLE){
                 throw  new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
             }
         }
@@ -153,5 +157,22 @@ public class SetmealServiceImpl implements SetmealService {
 
     }
 
+    /**
+     * 根据id查询菜品选项
+     * @param id
+     * @return
+     */
+    public List<DishItemVO> getDishItemById(Long id) {
+        return setmealMapper.getDishItemBySetmealId(id);
+    }
 
+    /**
+     * 条件查询
+     * @param setmeal
+     * @return
+     */
+    public List<Setmeal> list(Setmeal setmeal) {
+        List<Setmeal> list = setmealMapper.list(setmeal);
+        return list;
+    }
 }

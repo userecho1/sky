@@ -27,14 +27,18 @@ public class DishController {
     @ApiOperation("根据id查询菜品")
     @GetMapping("/{id}")
     public Result<DishVO> getById(@PathVariable Long id) {
-        DishVO dishVO=dishService.getById(id);
+        Dish dish=new Dish();
+        dish.setId(id);
+        DishVO dishVO=dishService.getById(dish);
 
         return Result.success(dishVO);
     }
     @ApiOperation("根据分类查询菜品")
     @GetMapping("/list")
     public Result<List<DishVO>> getListByCategoryId(Long categoryId) {
-        List<DishVO> dishListVOs=dishService.getListByCategoryId(categoryId);
+        Dish dish=new Dish();
+        dish.setCategoryId(categoryId);
+        List<DishVO> dishListVOs=dishService.getListByCategoryId(dish);
 
         return Result.success(dishListVOs);
     }

@@ -11,10 +11,10 @@ import java.util.List;
 public interface DishService {
     PageResult Page(DishPageQueryDTO dishPageQueryDTO);
 
-    List<DishVO> getListByCategoryId(Long categoryId);
+    List<DishVO> getListByCategoryId(Dish dish);
 
 
-    DishVO getById(Long id);
+    DishVO getById(Dish dish);
 
     void enableOrDisable(Integer status, Long id);
 

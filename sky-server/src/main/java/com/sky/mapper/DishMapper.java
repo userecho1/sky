@@ -17,15 +17,18 @@ public interface DishMapper {
     @Select("select count(0) from dish where category_id=#{id}")
     int getCountByCategoryId(Long id);
 
-    @Select("select * from dish where name=#{name}")
-    Dish getByDishName(String name);
+//    @Select("select * from dish where name=#{name}")
+//    Dish getByDishName(String name);
+//
+//    @Select("select * from dish where category_id=#{categoryId}")
+//    List<Dish> getByCategoryId(Long categoryId);
+//
+//    @Select("select *from dish where id=#{id}")
+//    Dish getById(Long id);
 
-    @Select("select * from dish where category_id=#{categoryId}")
-    List<Dish> getByCategoryId(Long categoryId);
+    Dish getOne(Dish dish);
 
-    @Select("select *from dish where id=#{id}")
-    Dish getById(Long id);
-
+    List<Dish> getList(Dish dish);
 
     @AutoFill(OperationType.UPDATE)
     void update(Dish dish);
