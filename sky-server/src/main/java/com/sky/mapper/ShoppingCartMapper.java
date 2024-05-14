@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface ShoppingCartMapper {
 
-    @Update("update shopping_cart set number=#{number} where id=#{id}")
+    @Update("update shopping_cart set number=#{number} where id=#{id} ")
     void update(ShoppingCart cart);
 
     List<ShoppingCart> list(ShoppingCart shoppingCart);
@@ -22,4 +22,6 @@ public interface ShoppingCartMapper {
 
     @Delete("delete from shopping_cart where user_id=#{userId}")
     void deleteByUserId(Long userId);
+
+    void delete(ShoppingCart shoppingCart);
 }

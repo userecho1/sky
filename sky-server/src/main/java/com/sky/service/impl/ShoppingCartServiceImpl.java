@@ -1,10 +1,12 @@
 package com.sky.service.impl;
 
+import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.ShoppingCartDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.ShoppingCart;
+import com.sky.exception.ShoppingCartBusinessException;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.ShoppingCartMapper;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.util.Collections.list;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -81,5 +85,29 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void cleanShoppingCart() {
         Long userId=BaseContext.getCurrentId();
         shoppingCartMapper.deleteByUserId(userId);
+    }
+
+    @Override
+    @Transactional
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart shoppingCart=new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
+        shoppingCart.setUserId(BaseContext.getCurrentId());
+
+
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        if(list==null||list.size()==0){
+            return;
+        }
+        Integer a=list.get(0).getNumber();
+        if(a==1){
+            shoppingCartMapper.delete(shoppingCart);
+        }else {
+            ShoppingCart shoppingCart1=list.get(0);
+            shoppingCart1.setNumber(a-1);
+
+            shoppingCartMapper.update(shoppingCart1);
+        }
+
     }
 }
