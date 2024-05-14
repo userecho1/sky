@@ -41,7 +41,7 @@ public class OrderServiceImpl  implements OrderService {
     private WeChatPayUtil weChatPayUtil;
 
 
-    private Orders orders;
+//    private Orders orders;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -65,11 +65,12 @@ public class OrderServiceImpl  implements OrderService {
         orders.setUserId(userId);
         orders.setAddressBookId(addressBook.getId());
         orders.setPayStatus(Orders.UN_PAID);
-        orders.setNumber(String.valueOf(System.currentTimeMillis()));
+
+        orders.setNumber(String.valueOf(System.currentTimeMillis())+BaseContext.getCurrentId());
         orders.setPhone(addressBook.getPhone());
         orders.setConsignee(addressBook.getConsignee());
         //新加
-        this.orders=orders;
+        //this.orders=orders;
 
 
         orders.setOrderTime(LocalDateTime.now());
@@ -122,17 +123,18 @@ public class OrderServiceImpl  implements OrderService {
 //        }
 
         //新加
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code","ORDERPAID");
-
-        OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
-        vo.setPackageStr(jsonObject.getString("package"));
-
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("code","ORDERPAID");
+//
+//        OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
+//        vo.setPackageStr(jsonObject.getString("package"));
+        OrderPaymentVO vo = new OrderPaymentVO();
         //新加
         Integer OrderPaidStatus = Orders.PAID;//支付状态，已支付
         Integer OrderStatus = Orders.TO_BE_CONFIRMED;  //订单状态，待接单
         LocalDateTime check_out_time = LocalDateTime.now();//更新支付时间
-        orderMapper.updateStatus(OrderStatus, OrderPaidStatus, check_out_time, this.orders.getId());
+        Orders order1=orderMapper.getByNumber(ordersPaymentDTO.getOrderNumber());
+        orderMapper.updateStatus(OrderStatus, OrderPaidStatus, check_out_time,order1.getId());
 
 
         return vo;
