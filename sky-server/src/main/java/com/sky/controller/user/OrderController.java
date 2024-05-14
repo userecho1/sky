@@ -45,4 +45,6 @@ public class OrderController {
         log.info("生成预支付交易单：{}", orderPaymentVO);
         return Result.success(orderPaymentVO);
     }
+
+    //TODO 催单，再来一单，查看历史订单 ，修改管理端密码， 购物车减少一个
 }

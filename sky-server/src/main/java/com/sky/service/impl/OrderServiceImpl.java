@@ -14,6 +14,7 @@ import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl  implements OrderService {
@@ -39,6 +42,8 @@ public class OrderServiceImpl  implements OrderService {
     private UserMapper userMapper;
     @Autowired
     private WeChatPayUtil weChatPayUtil;
+    @Autowired
+    private WebSocketServer webSocketServer;
 
 
 //    private Orders orders;
@@ -65,7 +70,7 @@ public class OrderServiceImpl  implements OrderService {
         orders.setUserId(userId);
         orders.setAddressBookId(addressBook.getId());
         orders.setPayStatus(Orders.UN_PAID);
-
+        //加强了订单不重复性，时间毫秒值加上当前用户id
         orders.setNumber(String.valueOf(System.currentTimeMillis())+BaseContext.getCurrentId());
         orders.setPhone(addressBook.getPhone());
         orders.setConsignee(addressBook.getConsignee());
@@ -122,20 +127,31 @@ public class OrderServiceImpl  implements OrderService {
 //            throw new OrderBusinessException("该订单已支付");
 //        }
 
-        //新加
+        //新加下面这段本意是模仿请求wx返回后数据，实际上不需要
 //        JSONObject jsonObject = new JSONObject();
 //        jsonObject.put("code","ORDERPAID");
-//
+//以下是原有逻辑
 //        OrderPaymentVO vo = jsonObject.toJavaObject(OrderPaymentVO.class);
 //        vo.setPackageStr(jsonObject.getString("package"));
+        //下面直接返回一个空的vo对象
         OrderPaymentVO vo = new OrderPaymentVO();
         //新加
+        //使用支付成功后逻辑，给订单添加支付时间，支付状态
         Integer OrderPaidStatus = Orders.PAID;//支付状态，已支付
         Integer OrderStatus = Orders.TO_BE_CONFIRMED;  //订单状态，待接单
         LocalDateTime check_out_time = LocalDateTime.now();//更新支付时间
+        //根据订单号获得订单id
         Orders order1=orderMapper.getByNumber(ordersPaymentDTO.getOrderNumber());
+
         orderMapper.updateStatus(OrderStatus, OrderPaidStatus, check_out_time,order1.getId());
 
+
+        Map map=new HashMap();
+        map.put("type",1);
+        map.put("orderId",order1.getId());
+        map.put("content","订单号："+ordersPaymentDTO.getOrderNumber());
+        String jsonString = JSONObject.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
 
         return vo;
     }
@@ -147,17 +163,17 @@ public class OrderServiceImpl  implements OrderService {
      */
     public void paySuccess(String outTradeNo) {
 
-        // 根据订单号查询订单
-        Orders ordersDB = orderMapper.getByNumber(outTradeNo);
-
-        // 根据订单id更新订单的状态、支付方式、支付状态、结账时间
-        Orders orders = Orders.builder()
-                .id(ordersDB.getId())
-                .status(Orders.TO_BE_CONFIRMED)
-                .payStatus(Orders.PAID)
-                .checkoutTime(LocalDateTime.now())
-                .build();
-
-        orderMapper.update(orders);
+//        // 根据订单号查询订单
+//        Orders ordersDB = orderMapper.getByNumber(outTradeNo);
+//
+//        // 根据订单id更新订单的状态、支付方式、支付状态、结账时间
+//        Orders orders = Orders.builder()
+//                .id(ordersDB.getId())
+//                .status(Orders.TO_BE_CONFIRMED)
+//                .payStatus(Orders.PAID)
+//                .checkoutTime(LocalDateTime.now())
+//                .build();
+//
+//        orderMapper.update(orders);
     }
 }
