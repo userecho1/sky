@@ -216,21 +216,46 @@ public class OrderServiceImpl  implements OrderService {
     public OrderVO qurryById(Long id) {
         Orders orders=orderMapper.getById(id);
         OrderVO orderVO = new OrderVO();
-        if(orders!=null){
-            BeanUtils.copyProperties(orders,orderVO);
-            if(orders==null){}
-            orderDetailMapper.getByOrderId(id);
-            orderVO.setOrderDetailList(orderDetailMapper.getByOrderId(id));
-            return orderVO;
-        }
-        throw  new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        BeanUtils.copyProperties(orders,orderVO);
+
+        List<OrderDetail> orderDetails=orderDetailMapper.getByOrderId(id);
+        orderVO.setOrderDetailList(orderDetails);
+        return orderVO;
+
 
     }
 
     @Override
     @Transactional
     public void cancelById(Long id) {
-        orderMapper.deleteByid(id);
-        orderDetailMapper.deleteByOrderId(id);
+        // 根据id查询订单
+        Orders ordersDB = orderMapper.getById(id);
+
+        // 校验订单是否存在
+        if (ordersDB == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        //订单状态 1待付款 2待接单 3已接单 4派送中 5已完成 6已取消
+        if (ordersDB.getStatus() > 2) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+//        Orders orders = new Orders();
+//        orders.setId(ordersDB.getId());
+
+        // 订单处于待接单状态下取消，需要进行退款
+        if (ordersDB.getStatus().equals(Orders.TO_BE_CONFIRMED)) {
+            //假装退款
+            //支付状态修改为 退款
+            ordersDB.setPayStatus(Orders.REFUND);
+        }
+
+        // 更新订单状态、取消原因、取消时间
+        ordersDB.setStatus(Orders.CANCELLED);
+        ordersDB.setCancelReason("用户取消");
+        ordersDB.setCancelTime(LocalDateTime.now());
+        orderMapper.update(ordersDB);
+
     }
 }
