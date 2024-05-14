@@ -1,18 +1,23 @@
 package com.sky.controller.user;
 
 
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
 import com.sky.service.impl.OrderServiceImpl;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController("userOrderController")
@@ -47,4 +52,21 @@ public class OrderController {
     }
 
     //TODO 催单，再来一单，查看历史订单 ，修改管理端密码， 购物车减少一个
+
+    @GetMapping("/historyOrders")
+    @ApiOperation("历史订单查询")
+    public Result<PageResult> page(OrdersPageQueryDTO ordersPageQueryDTO)  {
+
+        PageResult p= orderService.page(ordersPageQueryDTO);
+
+        return Result.success(p);
+    }
+    @GetMapping("/orderDetail/{id}")
+    @ApiOperation("根据订单id查询")
+    public Result<OrderVO> qurryById(@PathVariable Long id)  {
+
+        OrderVO vo= orderService.qurryById(id);
+
+        return Result.success(vo);
+    }
 }
