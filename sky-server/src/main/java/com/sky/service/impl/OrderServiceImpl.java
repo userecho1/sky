@@ -216,10 +216,21 @@ public class OrderServiceImpl  implements OrderService {
     public OrderVO qurryById(Long id) {
         Orders orders=orderMapper.getById(id);
         OrderVO orderVO = new OrderVO();
-        BeanUtils.copyProperties(orders,orderVO);
+        if(orders!=null){
+            BeanUtils.copyProperties(orders,orderVO);
+            if(orders==null){}
+            orderDetailMapper.getByOrderId(id);
+            orderVO.setOrderDetailList(orderDetailMapper.getByOrderId(id));
+            return orderVO;
+        }
+        throw  new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
 
-        orderDetailMapper.getByOrderId(id);
-        orderVO.setOrderDetailList(orderDetailMapper.getByOrderId(id));
-        return orderVO;
+    }
+
+    @Override
+    @Transactional
+    public void cancelById(Long id) {
+        orderMapper.deleteByid(id);
+        orderDetailMapper.deleteByOrderId(id);
     }
 }
