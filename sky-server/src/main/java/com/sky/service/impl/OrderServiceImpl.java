@@ -7,6 +7,7 @@ import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
+import com.sky.dto.OrdersRejectionDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.*;
 import com.sky.exception.AddressBookBusinessException;
@@ -311,5 +312,24 @@ public class OrderServiceImpl  implements OrderService {
         orderStatisticsVO.setDeliveryInProgress(deliveryInProgress);
         orderStatisticsVO.setToBeConfirmed(toBeConfirmed);
         return orderStatisticsVO;
+    }
+
+    @Override
+    public void rejection(OrdersRejectionDTO ordersRejectionDTO) {
+        Orders orders = orderMapper.getById(ordersRejectionDTO.getId());
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        if (orders.getStatus()!=Orders.TO_BE_CONFIRMED){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        if (orders.getPayStatus()!=Orders.PAID){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        orders.setRejectionReason(ordersRejectionDTO.getRejectionReason());
+        //微信退款逻辑
+        orders.setPayStatus(Orders.REFUND);
+        orders.setStatus(Orders.CANCELLED);
+        orderMapper.update(orders);
     }
 }

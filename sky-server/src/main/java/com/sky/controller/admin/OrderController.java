@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
+import com.sky.dto.OrdersRejectionDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -54,6 +55,15 @@ public class OrderController {
 
         OrderStatisticsVO orderStatisticsVO=orderService.statistics();
         return Result.success(orderStatisticsVO);
+    }
+
+    @PutMapping("/rejection")
+    @ApiOperation("拒单")
+    public Result rejection(@RequestBody OrdersRejectionDTO ordersRejectionDTO) {
+
+
+        orderService.rejection(ordersRejectionDTO);
+        return Result.success();
     }
 
 
