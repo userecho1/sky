@@ -280,4 +280,20 @@ public class OrderServiceImpl  implements OrderService {
         shoppingCartMapper.insertBatch(shoppingCartList);
 
     }
+
+    @Override
+    public void remind(Long id) {
+
+        Orders byId = orderMapper.getById(id);
+        if (byId == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        String number = byId.getNumber();
+        Map map=new HashMap();
+        map.put("type",2);
+        map.put("orderId",id);
+        map.put("content","订单号："+number);
+        String jsonString = JSONObject.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
+    }
 }

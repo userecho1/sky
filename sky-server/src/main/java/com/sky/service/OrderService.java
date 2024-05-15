@@ -33,4 +33,6 @@ public interface OrderService {
     void cancelById(Long id);
 
     void againById(Long id);
+
+    void remind(Long id);
 }
