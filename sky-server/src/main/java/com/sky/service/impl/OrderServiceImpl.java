@@ -17,6 +17,7 @@ import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
+import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 import com.sky.websocket.WebSocketServer;
@@ -298,5 +299,17 @@ public class OrderServiceImpl  implements OrderService {
         map.put("content","订单号："+number);
         String jsonString = JSONObject.toJSONString(map);
         webSocketServer.sendToAllClient(jsonString);
+    }
+
+    @Override
+    public OrderStatisticsVO statistics() {
+        OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
+        Integer confirmed=orderMapper.getCountByStatus(Orders.CONFIRMED);
+        Integer deliveryInProgress=orderMapper.getCountByStatus(Orders.DELIVERY_IN_PROGRESS);
+        Integer toBeConfirmed=orderMapper.getCountByStatus(Orders.TO_BE_CONFIRMED);
+        orderStatisticsVO.setConfirmed(confirmed);
+        orderStatisticsVO.setDeliveryInProgress(deliveryInProgress);
+        orderStatisticsVO.setToBeConfirmed(toBeConfirmed);
+        return orderStatisticsVO;
     }
 }

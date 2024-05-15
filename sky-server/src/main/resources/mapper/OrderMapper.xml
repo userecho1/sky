@@ -81,10 +81,10 @@
                 AND order_number like concat('%',#{number},'%')
             </if>
             <if test="phone != null">
-                AND customer_phone = #{phone}
+                AND phone = #{phone}
             </if>
             <if test="status != null">
-                AND order_status = #{status}
+                AND status = #{status}
             </if>
         </where>
     </select>
