@@ -340,4 +340,15 @@ public class OrderServiceImpl  implements OrderService {
         byId.setCancelReason(ordersCancelDTO.getCancelReason());
         orderMapper.update(byId);
     }
+
+    @Override
+    public void confirm(OrdersConfirmDTO ordersConfirmDTO) {
+        Long a=ordersConfirmDTO.getId();
+        Orders orders=orderMapper.getById(a);
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        orders.setStatus(Orders.CONFIRMED);
+        orderMapper.update(orders);
+    }
 }

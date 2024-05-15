@@ -70,6 +70,14 @@ public class OrderController {
         orderService.cancel(ordersCancelDTO);
         return Result.success();
     }
+    @PutMapping("/confirm")
+    @ApiOperation("接单")
+    public Result confirm(@RequestBody OrdersConfirmDTO ordersConfirmDTO) {
+
+
+        orderService.confirm(ordersConfirmDTO);
+        return Result.success();
+    }
 
 
 }
