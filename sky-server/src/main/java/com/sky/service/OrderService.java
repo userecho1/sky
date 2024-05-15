@@ -31,4 +31,6 @@ public interface OrderService {
     OrderVO qurryById(Long id);
 
     void cancelById(Long id);
+
+    void againById(Long id);
 }

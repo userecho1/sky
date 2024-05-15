@@ -2,6 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.ShoppingCartMapper">
+    <insert id="insertBatch">
+        <foreach collection="shoppingCartList" item="cart" separator=";">
+            insert into shopping_cart
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="cart.userId != null">user_id,</if>
+                <if test="cart.dishId != null">dish_id,</if>
+                <if test="cart.setmealId != null">setmeal_id,</if>
+                <if test="cart.dishFlavor != null">dish_flavor,</if>
+                <if test="cart.number != null">number,</if>
+                <if test="cart.amount != null">amount,</if>
+                <if test="cart.image != null">image,</if>
+                <if test="cart.createTime != null">create_time,</if>
+                <if test="cart.name != null and cart.name!=''">name,</if>
+            </trim>
+            values
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="cart.userId != null">#{cart.userId},</if>
+                <if test="cart.dishId != null">#{cart.dishId},</if>
+                <if test="cart.setmealId != null">#{cart.setmealId},</if>
+                <if test="cart.dishFlavor != null">#{cart.dishFlavor},</if>
+                <if test="cart.number != null">#{cart.number},</if>
+                <if test="cart.amount != null">#{cart.amount},</if>
+                <if test="cart.image != null">#{cart.image},</if>
+                <if test="cart.createTime != null">#{cart.createTime},</if>
+                <if test="cart.name != null and cart.name!=''">#{cart.name},</if>
+            </trim>
+        </foreach>
+    </insert>
+
     <delete id="delete">
         delete  from  shopping_cart
         <where>
