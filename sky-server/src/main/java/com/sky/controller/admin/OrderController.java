@@ -34,5 +34,18 @@ public class OrderController {
         return Result.success(p);
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/details/{id}")
+    @ApiOperation("查看订单详情")
+    public Result<OrderVO> qurryById(@PathVariable Long id) {
+
+        OrderVO vo = orderService.qurryById(id);
+        return Result.success(vo);
+    }
+
 
 }
