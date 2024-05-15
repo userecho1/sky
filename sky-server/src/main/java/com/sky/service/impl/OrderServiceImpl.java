@@ -362,4 +362,15 @@ public class OrderServiceImpl  implements OrderService {
         orderMapper.update(byId);
     }
 
+    @Override
+    public void complete(Long id) {
+        Orders byId = orderMapper.getById(id);
+        if (byId == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        byId.setStatus(Orders.COMPLETED);
+        byId.setDeliveryTime(LocalDateTime.now());
+        orderMapper.update(byId);
+    }
+
 }
