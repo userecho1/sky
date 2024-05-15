@@ -351,4 +351,15 @@ public class OrderServiceImpl  implements OrderService {
         orders.setStatus(Orders.CONFIRMED);
         orderMapper.update(orders);
     }
+
+    @Override
+    public void delivery(Long id) {
+        Orders byId = orderMapper.getById(id);
+        if (byId == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        byId.setStatus(Orders.DELIVERY_IN_PROGRESS);
+        orderMapper.update(byId);
+    }
+
 }

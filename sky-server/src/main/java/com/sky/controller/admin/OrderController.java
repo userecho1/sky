@@ -78,6 +78,14 @@ public class OrderController {
         orderService.confirm(ordersConfirmDTO);
         return Result.success();
     }
+    @PutMapping("/delivery/{id}")
+    @ApiOperation("派单")
+    public Result delivery(@PathVariable Long id) {
+
+
+        orderService.delivery(id);
+        return Result.success();
+    }
 
 
 }
