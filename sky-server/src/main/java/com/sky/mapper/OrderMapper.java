@@ -36,7 +36,7 @@ public interface OrderMapper {
     @Select("select * from orders where status=#{status} and order_time=#{orderTime}")
     List<Orders> getByStatusAndOrderTimeLT(Integer status, LocalDateTime orderTime);
 
-    @Select("select * from orders where user_id=#{userId}")
+
     Page<Orders> pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
 
     @Select("select * from orders where id=#{id}")

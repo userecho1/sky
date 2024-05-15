@@ -51,7 +51,7 @@ public class OrderController {
         return Result.success(orderPaymentVO);
     }
 
-    //TODO 催单，再来一单，查看历史订单 ，修改管理端密码， 购物车减少一个
+    //TODO 修改管理端密码
 
     @GetMapping("/historyOrders")
     @ApiOperation("历史订单查询")

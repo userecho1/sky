@@ -71,5 +71,23 @@
         </set>
         where id = #{id}
     </update>
+    <select id="pageQuery" resultType="com.sky.entity.Orders">
+        SELECT * FROM orders
+        <where>
+            <if test="beginTime != null and endTime!=null">
+                and  order_time between #{beginTime} and #{endTime}
+            </if>
+            <if test="number != null">
+                AND order_number like concat('%',#{number},'%')
+            </if>
+            <if test="phone != null">
+                AND customer_phone = #{phone}
+            </if>
+            <if test="status != null">
+                AND order_status = #{status}
+            </if>
+        </where>
+    </select>
+
 
 </mapper>
