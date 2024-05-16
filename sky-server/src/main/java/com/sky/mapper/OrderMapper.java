@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -47,4 +48,7 @@ public interface OrderMapper {
 
     @Select("select count(0) from  orders where status=#{status}")
     Integer getCountByStatus(Integer status);
+
+
+    Double sumByMap(Map map);
 }

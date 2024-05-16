@@ -92,6 +92,7 @@ public class OrderController {
         orderService.complete(id);
         return Result.success();
     }
+    //TODO service逻辑里没有完成相关判断逻辑
 
 
 }
