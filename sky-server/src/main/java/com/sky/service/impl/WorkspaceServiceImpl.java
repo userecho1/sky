@@ -33,9 +33,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     private DishMapper dishMapper;
 
     @Override
-    public BusinessDataVO businessData() {
-        LocalDateTime endTime= LocalDateTime.now();
-        LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+    public BusinessDataVO businessData(LocalDateTime startTime, LocalDateTime endTime) {
+
         Map map=new HashMap();
         map.put("begintime", startTime);
         map.put("endtime", endTime);
@@ -58,7 +57,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Integer validOrderCount=orderMapper.sumNumberByMap(map1);
 
 
-        if(totalOrderCount==null){
+        if(totalOrderCount==0){
 
             Double unitPrice=0.0;
             validOrderCount=0;
@@ -71,7 +70,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                     .unitPrice(unitPrice)
                     .build();
         }else {
-            if (validOrderCount == null) {
+            if (validOrderCount == 0) {
                 validOrderCount = 0;
                 Double orderCompletionRate=0.0;
                 Double unitPrice=0.0;
@@ -85,7 +84,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             }else {
                 Double  orderCompletionRate=validOrderCount.doubleValue()/totalOrderCount.doubleValue();
                 Double  unitPrice=turnover.doubleValue()/validOrderCount.doubleValue();
-
 
                 return BusinessDataVO.builder()
                         .newUsers(newUsers)
