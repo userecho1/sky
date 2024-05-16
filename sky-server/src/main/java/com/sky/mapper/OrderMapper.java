@@ -51,4 +51,6 @@ public interface OrderMapper {
 
 
     Double sumByMap(Map map);
+
+    Integer sumNumberByMap(Map map);
 }
