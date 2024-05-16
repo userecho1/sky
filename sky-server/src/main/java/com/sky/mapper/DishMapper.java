@@ -40,4 +40,7 @@ public interface DishMapper {
 
     @Delete("delete from dish where id=#{id}")
     void delete(Long id);
+
+    @Select("select count(0) from dish where status=#{status}")
+    Integer getCountByStatus(Integer  status);
 }

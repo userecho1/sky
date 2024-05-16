@@ -3,11 +3,13 @@ package com.sky.service.impl;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.entity.Orders;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.WorkspaceService;
 import com.sky.vo.BusinessDataVO;
+import com.sky.vo.DishOverViewVO;
 import com.sky.vo.SetmealOverViewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     private UserMapper userMapper;
     @Autowired
     private SetmealMapper setmealMapper;
+    @Autowired
+    private DishMapper dishMapper;
 
     @Override
     public BusinessDataVO businessData() {
@@ -99,7 +103,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     }
 
     @Override
-    public SetmealOverViewVO setmealOverViewVO() {
+    public SetmealOverViewVO overviewSetmeals() {
         Integer  disable= StatusConstant.DISABLE;
         Integer  enable=StatusConstant.ENABLE;
         Integer discontinued=setmealMapper.getCountByStatus(disable);
@@ -107,6 +111,18 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
 
         return SetmealOverViewVO.builder()
+                .discontinued(discontinued)
+                .sold(sold)
+                .build();
+    }
+
+    @Override
+    public DishOverViewVO overviewDishes() {
+        Integer  disable= StatusConstant.DISABLE;
+        Integer  enable=StatusConstant.ENABLE;
+        Integer discontinued=dishMapper.getCountByStatus(disable);
+        Integer sold=dishMapper.getCountByStatus(enable);
+        return DishOverViewVO.builder()
                 .discontinued(discontinued)
                 .sold(sold)
                 .build();

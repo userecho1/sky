@@ -34,7 +34,15 @@ public class WorkspaceController {
     @GetMapping("/overviewSetmeals")
     public Result<SetmealOverViewVO> overviewSetmeals(){
 
-        SetmealOverViewVO setmealOverViewVO =workspaceService.setmealOverViewVO();
+        SetmealOverViewVO setmealOverViewVO =workspaceService.overviewSetmeals();
         return Result.success(setmealOverViewVO);
+    }
+
+    @ApiOperation("菜品总览")
+    @GetMapping("/overviewDishes")
+    public Result<DishOverViewVO> overviewDishes(){
+
+        DishOverViewVO DishOverViewVO =workspaceService.overviewDishes();
+        return Result.success(DishOverViewVO);
     }
 }
