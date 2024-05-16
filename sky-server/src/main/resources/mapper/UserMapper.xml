@@ -7,4 +7,29 @@
         insert into user (openid, name, phone, sex, id_number, avatar, create_time)
         values (#{openid}, #{name}, #{phone}, #{sex}, #{idNumber}, #{avatar}, #{createTime})
     </insert>
+    <select id="sumByMap" resultType="java.lang.Integer">
+        select count(0) from user
+        <where>
+            <if test="begintime!=null">
+                and create_time &gt; #{begintime}
+            </if>
+            <if test="endtime!=null">
+                and create_time &lt; #{endtime}
+            </if>
+        </where>
+    </select>
+
+
 </mapper>
+<!--<select id="getByBetweenTimeAandB" resultType="java.util.HashMap">&ndash;&gt;-->
+<!--            select date (create_time)  as date,count(0) as count-->
+<!--            from  user-->
+<!--            where  DATE (create_time) between #{begin} and #{end}-->
+<!--            group by DATE(create_time)-->
+<!--            order by date(create_time)-->
+<!--    </select>-->
+
+<!--    <select id="getAllByLessTimeA" parameterType="java.time.LocalDateTime" resultType="java.lang.Integer">-->
+<!--        select count(0) from user-->
+<!--        where  (create_time) between '1999-05-12 06:03:26' and #{a}-->
+<!--    </select>-->

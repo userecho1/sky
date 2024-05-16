@@ -28,7 +28,48 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public UserReportVO userStatistics(LocalDate begin, LocalDate end) {
-        return null;
+        List<LocalDate> dateList = new ArrayList<>();
+        LocalDate currentDate = begin;
+        while (!currentDate.isAfter(end)) {
+            dateList.add(currentDate);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        List<Integer> newUserList=new ArrayList<>();
+        for (LocalDate date : dateList) {
+
+            LocalDateTime begintime = LocalDateTime.of(date, LocalTime.MIN);
+            LocalDateTime endtime = LocalDateTime.of(date, LocalTime.MAX);
+
+            Map map=new HashMap();
+            map.put("begintime", begintime);
+            map.put("endtime", endtime);
+            Integer newuser=userMapper.sumByMap(map);
+
+            newuser=newuser==null?0:newuser;
+            newUserList.add(newuser);
+        }
+
+        List<Integer> totalUserList=new ArrayList<>();
+        for (LocalDate date : dateList) {
+
+            LocalDateTime endtime = LocalDateTime.of(date, LocalTime.MAX);
+
+            Map map=new HashMap();
+            map.put("endtime", endtime);
+            Integer totaluser=userMapper.sumByMap(map);
+
+            totaluser=totaluser==null?0:totaluser;
+            totalUserList.add(totaluser);
+        }
+
+
+
+        return UserReportVO.builder()
+                .dateList(StringUtils.join(dateList, ","))
+                .newUserList(StringUtils.join(newUserList, ","))
+                .totalUserList(StringUtils.join(totalUserList,","))
+                .build();
 
     }
 
