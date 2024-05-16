@@ -10,6 +10,7 @@ import com.sky.mapper.UserMapper;
 import com.sky.service.WorkspaceService;
 import com.sky.vo.BusinessDataVO;
 import com.sky.vo.DishOverViewVO;
+import com.sky.vo.OrderOverViewVO;
 import com.sky.vo.SetmealOverViewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,6 +126,48 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         return DishOverViewVO.builder()
                 .discontinued(discontinued)
                 .sold(sold)
+                .build();
+    }
+
+    @Override
+    public OrderOverViewVO overviewOrders() {
+        LocalDateTime endTime= LocalDateTime.now();
+        LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        Map map=new HashMap();
+        map.put("begintime", startTime);
+        map.put("endtime", endTime);
+        Integer allOrders= orderMapper.sumNumberByMap(map);
+        if(allOrders==null){
+            allOrders=0;
+        }
+        map.put("status", Orders.CANCELLED);
+        Integer  cancelledOrders=orderMapper.sumNumberByMap(map);
+        if(cancelledOrders==null){
+            cancelledOrders=0;
+        }
+        map.put("status", Orders.COMPLETED);
+        Integer  completedOrders=orderMapper.sumNumberByMap(map);
+        if(completedOrders==null){
+            completedOrders=0;
+        }
+        map.put("status", Orders.DELIVERY_IN_PROGRESS);
+        Integer deliveredOrders=orderMapper.sumNumberByMap(map);
+        if(deliveredOrders==null){
+            deliveredOrders=0;
+        }
+        map.put("status",Orders.TO_BE_CONFIRMED);
+        Integer  waitingOrders=orderMapper.sumNumberByMap(map);
+        if(waitingOrders==null){
+            waitingOrders=0;
+        }
+
+
+        return OrderOverViewVO.builder()
+                .allOrders(allOrders)
+                .cancelledOrders(cancelledOrders)
+                .completedOrders(completedOrders)
+                .deliveredOrders(deliveredOrders)
+                .waitingOrders(waitingOrders)
                 .build();
     }
 }
